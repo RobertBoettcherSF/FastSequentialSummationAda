@@ -1,11 +1,11 @@
--- 0.02 Fixed version with complete implementations
-with Ada.Text_IO; use Ada.Text_IO;
+-- 0.03 Fixed version with complete implementations, all warnings addressed
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 
 package body Fast_Sequential_Summation is
 
     -- Helper procedure to update node statistics
-    procedure Update_Node_Stats(Node : in out Node_Ptr) is
+    -- Updates the Sum and Count fields based on children's values
+    procedure Update_Node_Stats(Node : in Node_Ptr) is
     begin
         if Node = null then
             return;
@@ -24,25 +24,6 @@ package body Fast_Sequential_Summation is
             Node.Count := Node.Count + Node.Right.Count;
         end if;
     end Update_Node_Stats;
-
-    -- Helper function to get the rank (position) of a node in in-order traversal
-    function Get_Rank(Node : Node_Ptr) return Integer is
-        Rank : Integer := 0;
-    begin
-        if Node = null then
-            return 0;
-        end if;
-        
-        -- Count nodes in left subtree
-        if Node.Left /= null then
-            Rank := Rank + Node.Left.Count;
-        end if;
-        
-        -- Add 1 for this node
-        Rank := Rank + 1;
-        
-        return Rank;
-    end Get_Rank;
 
     -- Helper procedure for in-order insertion to maintain sorted order
     procedure Insert_Recursive(Current : in out Node_Ptr; Value : Integer; Inserted : out Boolean) is
@@ -87,7 +68,6 @@ package body Fast_Sequential_Summation is
                                    Current_Rank : Integer) return Integer is
         Left_Count : Integer := 0;
         Node_Rank : Integer := 0;
-        Right_Count : Integer := 0;
         Sum_Result : Integer := 0;
     begin
         if Node = null then
@@ -97,10 +77,6 @@ package body Fast_Sequential_Summation is
         -- Calculate counts for subtrees
         if Node.Left /= null then
             Left_Count := Node.Left.Count;
-        end if;
-        
-        if Node.Right /= null then
-            Right_Count := Node.Right.Count;
         end if;
         
         Node_Rank := Current_Rank + Left_Count + 1;
@@ -143,7 +119,6 @@ package body Fast_Sequential_Summation is
                                                Current_Rank : Integer) return Float is
         Left_Count : Integer := 0;
         Node_Rank : Integer := 0;
-        Right_Count : Integer := 0;
         Sum_Sq : Float := 0.0;
     begin
         if Node = null then
@@ -153,10 +128,6 @@ package body Fast_Sequential_Summation is
         -- Calculate counts for subtrees
         if Node.Left /= null then
             Left_Count := Node.Left.Count;
-        end if;
-        
-        if Node.Right /= null then
-            Right_Count := Node.Right.Count;
         end if;
         
         Node_Rank := Current_Rank + Left_Count + 1;
