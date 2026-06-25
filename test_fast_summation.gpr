@@ -1,12 +1,15 @@
--- 0.01 Initial version
-project Fast_Sequential_Summation is
+-- GPR file for test program
+project Test_Fast_Summation is
     -- Specify source, object, and executable directories
     for Source_Dirs use (".");
     for Object_Dir use "obj";
     for Exec_Dir use ".";
 
+    -- Main program
+    for Main use ("test_fast_summation.adb");
+
     -- Compiler options
     package Compiler is
         for Default_Switches ("Ada") use ("-O2", "-gnatwa"); -- Optimization and warnings
     end Compiler;
-end Fast_Sequential_Summation;
+end Test_Fast_Summation;
